@@ -118,7 +118,7 @@ export const founder = {
   photo: "/images/owner/founder.jpeg",
   bio: [
     "Vincent Edochie Mmadukolu is a seasoned solar energy and electrical professional with deep roots in one of West Africa's largest electrical trading hubs. After completing his secondary education at Ogbaru High School, Ogakuba, in Ogbaru LGA of Anambra State, he learnt his trade at the famous Electrical Dealers International Market, Onitsha/Owerri Road, Obosi, Anambra State — the marketplace where Nigeria's best electrical merchants are trained.",
-    "Over the years he has grown from a market apprentice into the founder of Divine Vine-Edo Global Resources Ltd, supplying and installing solar energy systems and electrical equipment for homes, businesses and communities across Benue, Delta and beyond.",
+    "Over the years he has grown from a market apprentice into the founder of Divine Vine-Edo Global Resources Ltd, supplying and installing solar energy systems and electrical equipment for homes, businesses and communities across Benue, Delta, Anambra, Enugu, Imo, Taraba and beyond.",
   ],
   education: {
     label: "Education",

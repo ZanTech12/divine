@@ -60,6 +60,7 @@ export function VideosSection() {
       {/* Background Decorations */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-amber-500/10 blur-[120px]" />
+
         <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-blue-500/10 blur-[120px]" />
 
         <div
@@ -76,7 +77,6 @@ export function VideosSection() {
 
         {/* Section Header */}
         <div className="mb-16 flex flex-col items-center text-center">
-
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/[0.08] px-5 py-2">
             <Sparkles className="h-4 w-4 text-amber-400" />
 
@@ -117,16 +117,13 @@ export function VideosSection() {
 
         {/* Video Gallery */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
           {projectVideos.map((video) => (
             <article
               key={video.id}
               className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#101e30] shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-amber-500/10"
             >
-
               {/* Video Thumbnail */}
               <div className="relative aspect-[9/16] overflow-hidden bg-black">
-
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                   style={{
@@ -174,7 +171,6 @@ export function VideosSection() {
 
               {/* Video Details */}
               <div className="p-6">
-
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h3 className="text-xl font-extrabold text-white transition-colors group-hover:text-amber-400">
@@ -205,20 +201,16 @@ export function VideosSection() {
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
-
               </div>
             </article>
           ))}
-
         </div>
 
         {/* Bottom Call To Action */}
         <div className="relative mt-20 overflow-hidden rounded-[30px] border border-amber-400/20 bg-gradient-to-r from-[#152438] via-[#18283a] to-[#101b2a] p-8 sm:p-12">
-
           <div className="pointer-events-none absolute -right-10 -top-20 h-64 w-64 rounded-full bg-amber-400/10 blur-[70px]" />
 
           <div className="relative flex flex-col items-center justify-between gap-8 text-center md:flex-row md:text-left">
-
             <div className="max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
                 Let's Build Something Great
@@ -243,13 +235,12 @@ export function VideosSection() {
               Discuss Your Project
               <ArrowUpRight className="h-5 w-5" />
             </a>
-
           </div>
         </div>
 
         {/* Footer Note */}
         <p className="mt-10 text-center text-xs tracking-wide text-slate-500">
-          © {new Date().getFullYear()} DIVINE VINE-EDO GLOBAL RESOURCES LTD.
+          © 2026 DIVINE VINE-EDO GLOBAL RESOURCES LTD.
           All Rights Reserved.
         </p>
 
@@ -268,7 +259,6 @@ export function VideosSection() {
             className="relative w-full max-w-[420px] overflow-hidden rounded-3xl border border-white/10 bg-[#101e30] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-
             {/* Modal Header */}
             <div className="flex items-center justify-between px-5 py-4">
               <div>
@@ -309,11 +299,9 @@ export function VideosSection() {
                 {activeVideo.description}
               </p>
             </div>
-
           </div>
         </div>
       )}
-
     </section>
   );
 }
