@@ -1,6 +1,6 @@
 
 import { Mail, Phone, MapPin, Globe, Clock, ArrowUp } from "lucide-react";
-import { Logo } from "@/components/site/logo";
+import { Logo } from "@/app/logo";
 import {
   company,
   phones,

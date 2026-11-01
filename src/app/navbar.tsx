@@ -11,7 +11,7 @@ import {
   Clock,
 } from "lucide-react";
 
-import { Logo } from "@/components/site/logo";
+import { Logo } from "@/app/logo";
 import { company, phones, navigation } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
 

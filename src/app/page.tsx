@@ -1,14 +1,14 @@
-import { Navbar } from "@/components/site/navbar";
-import { Hero } from "@/components/site/hero";
-import { About } from "@/components/site/about";
-import { Services } from "@/components/site/services";
-import { Projects } from "@/components/site/projects";
-import { VideosSection } from "@/components/site/videos-section";
-import { Founder } from "@/components/site/founder";
-import { WhyUs } from "@/components/site/why-us";
-import { Contact } from "@/components/site/contact";
-import { Footer } from "@/components/site/footer";
-import { FloatingActions } from "@/components/site/floating-actions";
+import { Navbar } from "@/app/navbar";
+import { Hero } from "@/app/hero";
+import { About } from "@/app/about/page";
+import { Services } from "@/app/services/page";
+import { Projects } from "@/app/projects/page";
+import { VideosSection } from "@/app/video/page";
+import { Founder } from "@/app/founder/page";
+import { WhyUs } from "@/app/whyus/page";
+import { Contact } from "@/app/contact/page";
+import { Footer } from "@/app/footer";
+import { FloatingActions } from "@/app/floating-actions";
 
 export default function Home() {
   return (
