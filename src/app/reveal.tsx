@@ -3,7 +3,6 @@
 
 import {
   Children,
-  isValidElement,
   useEffect,
   useRef,
   useState,
@@ -101,7 +100,7 @@ export function Reveal({
   duration = 850,
   once = true,
   threshold = 0.12,
-  rootMargin = "0px 0px -50px 0px",
+  rootMargin = "0px 0px -10px 0px",
   easing = "premium",
   distance = 48,
   splitBy = "word",
@@ -116,6 +115,7 @@ export function Reveal({
 
   /* =====================================================
      INTERSECTION OBSERVER
+     Works on desktop, tablets and mobile devices.
   ===================================================== */
 
   useEffect(() => {
@@ -123,17 +123,11 @@ export function Reveal({
 
     if (!element) return;
 
-    let observer: IntersectionObserver | null = null;
-
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     );
 
-    const mobileQuery = window.matchMedia(
-      "(max-width: 767px)"
-    );
-
-    if (reducedMotion.matches || mobileQuery.matches) {
+    if (reducedMotion.matches) {
       setShown(true);
       return;
     }
@@ -143,27 +137,34 @@ export function Reveal({
       return;
     }
 
-    observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setShown(true);
+    let observer: IntersectionObserver | null = null;
 
-            if (once) {
-              observer?.unobserve(element);
+    try {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setShown(true);
+
+              if (once) {
+                observer?.unobserve(element);
+              }
+            } else if (!once) {
+              setShown(false);
             }
-          } else if (!once) {
-            setShown(false);
-          }
+          });
+        },
+        {
+          threshold: Math.min(Math.max(threshold, 0), 0.1),
+          rootMargin,
         }
-      },
-      {
-        threshold,
-        rootMargin,
-      }
-    );
+      );
 
-    observer.observe(element);
+      observer.observe(element);
+    } catch {
+      // Prevent content from remaining invisible if observation fails.
+      setShown(true);
+    }
 
     return () => {
       observer?.disconnect();
@@ -172,25 +173,20 @@ export function Reveal({
 
   /* =====================================================
      PARALLAX EFFECT
+     Available on desktop and mobile.
   ===================================================== */
 
   useEffect(() => {
-    if (!parallax || !innerRef.current) return;
+    if (!parallax || !innerRef.current || !ref.current) return;
 
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     );
 
-    const mobileQuery = window.matchMedia(
-      "(max-width: 767px)"
-    );
-
-    if (reducedMotion.matches || mobileQuery.matches) return;
+    if (reducedMotion.matches) return;
 
     const element = ref.current;
     const inner = innerRef.current;
-
-    if (!element || !inner) return;
 
     let frame = 0;
 
@@ -201,7 +197,6 @@ export function Reveal({
         const rect = element.getBoundingClientRect();
 
         const viewportCenter = window.innerHeight / 2;
-
         const elementCenter = rect.top + rect.height / 2;
 
         const offset =
@@ -228,7 +223,6 @@ export function Reveal({
       cancelAnimationFrame(frame);
 
       window.removeEventListener("scroll", updateParallax);
-
       window.removeEventListener("resize", updateParallax);
     };
   }, [parallax]);
@@ -429,11 +423,6 @@ export function Reveal({
         return part;
       }
 
-      const content =
-        splitBy === "character"
-          ? part
-          : part;
-
       return (
         <span
           key={index}
@@ -450,7 +439,7 @@ export function Reveal({
             transitionTimingFunction: revealEasing[easing],
           }}
         >
-          {content}
+          {part}
         </span>
       );
     });
@@ -466,78 +455,70 @@ export function Reveal({
   const showLineDraw =
     variant === "line-draw" && shown;
 
+  /* =====================================================
+     RENDER
+  ===================================================== */
+
   return (
-    <>
+    <div
+      ref={ref}
+      style={{
+        ...revealStyle,
+        position: "relative",
+        ...(glow && shown
+          ? {
+              filter:
+                "drop-shadow(0 0 18px rgba(245, 158, 11, 0.25))",
+            }
+          : {}),
+      }}
+      className={`transform-gpu ${className}`}
+    >
       <div
-        ref={ref}
+        ref={innerRef}
+        className="relative"
         style={{
-          ...revealStyle,
-          position: "relative",
-          ...(glow && shown
-            ? {
-                filter: "drop-shadow(0 0 18px rgba(245, 158, 11, 0.25))",
-              }
-            : {}),
+          transition: "transform 180ms ease-out",
         }}
-        className={`transform-gpu ${className}`}
       >
-        <div
-          ref={innerRef}
-          className="relative"
-          style={{
-            transition: "transform 180ms ease-out",
-          }}
-        >
-          {variant === "split-text"
-            ? renderSplitText()
-            : children}
-        </div>
-
-        {variant === "light-sweep" && (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[45%]"
-            style={{
-              background:
-                "linear-gradient(110deg, transparent, rgba(255,255,255,0.35), transparent)",
-              transform: showLightSweep
-                ? "translateX(250%)"
-                : "translateX(-120%)",
-              transition: `transform ${Math.max(
-                duration,
-                1100
-              )}ms ${revealEasing.premium}`,
-              transitionDelay: `${delay + 150}ms`,
-            }}
-          />
-        )}
-
-        {variant === "line-draw" && (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-amber-300 via-amber-500 to-transparent"
-            style={{
-              transform: showLineDraw
-                ? "scaleX(1)"
-                : "scaleX(0)",
-              transition: `transform ${duration}ms ${revealEasing.premium}`,
-              transitionDelay: `${delay + 150}ms`,
-            }}
-          />
-        )}
+        {variant === "split-text"
+          ? renderSplitText()
+          : children}
       </div>
 
-      <style jsx global>{`
-        @media (prefers-reduced-motion: reduce) {
-          .transform-gpu {
-            opacity: 1 !important;
-            transform: none !important;
-            filter: none !important;
-            clip-path: none !important;
-          }
-        }
-      `}</style>
-    </>
+      {variant === "light-sweep" && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[45%]"
+          style={{
+            background:
+              "linear-gradient(110deg, transparent, rgba(255,255,255,0.35), transparent)",
+            transform: showLightSweep
+              ? "translateX(250%)"
+              : "translateX(-120%)",
+            transition: `transform ${Math.max(
+              duration,
+              1100
+            )}ms ${revealEasing.premium}`,
+            transitionDelay: `${delay + 150}ms`,
+          }}
+        />
+      )}
+
+      {variant === "line-draw" && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-amber-300 via-amber-500 to-transparent"
+          style={{
+            transform: showLineDraw
+              ? "scaleX(1)"
+              : "scaleX(0)",
+            transition: `transform ${duration}ms ${revealEasing.premium}`,
+            transitionDelay: `${delay + 150}ms`,
+          }}
+        />
+      )}
+    </div>
   );
 }
 
