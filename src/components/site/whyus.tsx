@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { processSteps, trustBadges } from "@/lib/site-data";
+import { Reveal } from "@/app/reveal";
 
 const websiteUrl = "https://www.divinesolarhub.com";
 
@@ -42,7 +43,7 @@ export function WhyUs() {
     <section
       id="why-choose-us"
       aria-labelledby="why-us-heading"
-      className="bg-background py-20 sm:py-24"
+      className="relative isolate overflow-hidden bg-background py-20 sm:py-24"
     >
       {/* Customer process structured data */}
       <script
@@ -55,27 +56,71 @@ export function WhyUs() {
         }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Background Decorations */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="absolute -left-40 top-20 h-80 w-80 rounded-full bg-primary/[0.04] blur-[100px]" />
+
+        <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-accent/[0.08] blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Section Heading */}
         <header className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-primary">
-            Why Choose Us
-          </span>
 
-          <h2
-            id="why-us-heading"
-            className="mt-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
+          {/* Eyebrow */}
+          <Reveal
+            variant="light-sweep"
+            duration={1000}
+            easing="premium"
           >
-            From First Call to Final Switch — We Deliver
-          </h2>
+            <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-bold uppercase tracking-widest text-primary">
+              Why Choose Us
+            </span>
+          </Reveal>
 
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Discover how Divine Vine-Edo Global Resources Ltd
-            approaches solar energy and electrical projects,
-            from understanding your requirements to planning
-            and completing the work.
-          </p>
+          {/* Main Heading */}
+          <Reveal
+            variant="split-text"
+            delay={120}
+            duration={1100}
+            easing="premium"
+          >
+            <h2
+              id="why-us-heading"
+              className="mt-5 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+            >
+              From First Call to Final Switch — We Deliver
+            </h2>
+          </Reveal>
+
+          {/* Description */}
+          <Reveal
+            variant="focus"
+            delay={220}
+            duration={1100}
+            easing="elegant"
+          >
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              Discover how Divine Vine-Edo Global Resources Ltd
+              approaches solar energy and electrical projects,
+              from understanding your requirements to planning
+              and completing the work.
+            </p>
+          </Reveal>
+
+          {/* Heading Accent */}
+          <Reveal
+            variant="line-draw"
+            delay={350}
+            duration={1000}
+            easing="premium"
+          >
+            <div className="mx-auto mt-6 h-1 w-20 rounded-full bg-primary" />
+          </Reveal>
         </header>
 
         {/* Process Steps */}
@@ -88,67 +133,138 @@ export function WhyUs() {
             className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
             aria-label="Our project delivery process"
           >
-            {processSteps.map((step) => (
-              <li
+            {processSteps.map((step, index) => (
+              <Reveal
                 key={step.step}
-                className="site-card relative rounded-2xl border bg-card p-6"
+                variant={
+                  index % 4 === 0
+                    ? "up"
+                    : index % 4 === 1
+                      ? "left"
+                      : index % 4 === 2
+                        ? "down"
+                        : "right"
+                }
+                delay={(index % 4) * 140}
+                duration={1050}
+                easing="premium"
               >
-                <span
-                  className="text-5xl font-extrabold leading-none text-accent"
-                  aria-hidden="true"
-                >
-                  {step.step}
-                </span>
+                <li className="site-card group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-500 hover:-translate-y-2 hover:border-primary/30 hover:shadow-2xl sm:p-7">
 
-                <h4 className="mt-4 text-lg font-bold text-foreground">
-                  {step.title}
-                </h4>
+                  {/* Decorative Accent */}
+                  <div
+                    className="absolute right-0 top-0 h-1 w-0 rounded-bl-full bg-primary transition-all duration-700 group-hover:w-1/2"
+                    aria-hidden="true"
+                  />
 
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
-              </li>
+                  {/* Step Number */}
+                  <div className="relative">
+                    <span
+                      className="text-5xl font-extrabold leading-none text-accent/80 transition-all duration-500 group-hover:translate-x-2 group-hover:text-primary sm:text-6xl"
+                      aria-hidden="true"
+                    >
+                      {step.step}
+                    </span>
+
+                    <span
+                      className="absolute bottom-1 left-0 h-1 w-8 rounded-full bg-primary/50 transition-all duration-500 group-hover:w-16 group-hover:bg-primary"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* Step Title */}
+                  <h4 className="mt-6 text-lg font-bold text-foreground transition-colors duration-300 group-hover:text-primary">
+                    {step.title}
+                  </h4>
+
+                  {/* Step Description */}
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {step.description}
+                  </p>
+
+                  {/* Bottom Decorative Line */}
+                  <div
+                    className="mt-6 h-px w-full bg-border transition-all duration-500 group-hover:bg-primary/40"
+                    aria-hidden="true"
+                  />
+                </li>
+              </Reveal>
             ))}
           </ol>
         </div>
 
         {/* Trust Badges */}
-        <div
-          className="mt-12 rounded-2xl bg-muted p-6 sm:p-7 lg:p-8"
-          aria-labelledby="trust-heading"
+        <Reveal
+          variant="depth"
+          delay={150}
+          duration={1150}
+          easing="premium"
         >
-          <h3
-            id="trust-heading"
-            className="mb-6 text-center text-lg font-bold text-foreground"
+          <div
+            className="relative mt-12 overflow-hidden rounded-2xl border border-border bg-muted p-6 transition-all duration-500 hover:border-primary/20 sm:p-7 lg:p-8"
+            aria-labelledby="trust-heading"
           >
-            Our Service Commitments
-          </h3>
+            {/* Decorative Background */}
+            <div
+              className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-primary/[0.06] blur-[80px]"
+              aria-hidden="true"
+            />
 
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {trustBadges.map((badge) => {
-              const Icon = badgeIcons[badge.icon] ?? BadgeCheck;
-
-              return (
-                <li
-                  key={badge.label}
-                  className="flex items-center gap-3.5"
+            {/* Trust Heading */}
+            <Reveal
+              variant="up"
+              duration={950}
+              easing="elegant"
+            >
+              <div className="relative mb-7 text-center">
+                <h3
+                  id="trust-heading"
+                  className="text-lg font-bold text-foreground sm:text-xl"
                 >
-                  <span
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-secondary"
-                    aria-hidden="true"
+                  Our Service Commitments
+                </h3>
+
+                <div
+                  className="mx-auto mt-3 h-1 w-12 rounded-full bg-primary"
+                  aria-hidden="true"
+                />
+              </div>
+            </Reveal>
+
+            {/* Trust Badge Items */}
+            <ul className="relative grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {trustBadges.map((badge, index) => {
+                const Icon = badgeIcons[badge.icon] ?? BadgeCheck;
+
+                return (
+                  <Reveal
+                    key={badge.label}
+                    variant={index % 2 === 0 ? "left" : "right"}
+                    delay={index * 130}
+                    duration={950}
+                    easing="premium"
                   >
-                    <Icon className="h-5.5 w-5.5" />
-                  </span>
+                    <li className="group flex items-center gap-3.5 rounded-xl border border-transparent p-3 transition-all duration-500 hover:border-border hover:bg-background hover:shadow-lg">
 
-                  <p className="text-sm font-bold text-foreground">
-                    {badge.label}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+                      {/* Badge Icon */}
+                      <span
+                        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-secondary transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-secondary group-hover:text-white group-hover:shadow-lg"
+                        aria-hidden="true"
+                      >
+                        <Icon className="h-5.5 w-5.5" />
+                      </span>
 
+                      {/* Badge Label */}
+                      <p className="text-sm font-bold text-foreground transition-colors duration-300 group-hover:text-primary">
+                        {badge.label}
+                      </p>
+                    </li>
+                  </Reveal>
+                );
+              })}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -147,7 +147,21 @@ export function Footer() {
           >
             <ArrowUp className="h-4 w-4" />
           </a>
+        </div>
 
+        {/* Developer Credit */}
+        <div className="border-t border-white/10 px-4 py-4 text-center">
+          <p className="text-xs text-white/50">
+            Developed by{" "}
+            <a
+              href="https://www.bimtechsolutions.com.ng"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-amber-400 transition-colors hover:text-amber-300"
+            >
+              Bimtech Solutions
+            </a>
+          </p>
         </div>
       </div>
     </footer>
