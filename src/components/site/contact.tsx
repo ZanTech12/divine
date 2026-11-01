@@ -13,16 +13,19 @@ import {
   ExternalLink,
   Navigation,
 } from "lucide-react";
+
 import {
   company,
   phones,
   offices,
   services,
 } from "@/lib/site-data";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+
 import {
   Select,
   SelectContent,
@@ -30,10 +33,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { useToast } from "@/hooks/use-toast";
+
+const websiteUrl = "https://www.divinesolarhub.com";
+
+// Contact structured data for search engines.
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${websiteUrl}/#organization`,
+  name: company.name,
+  url: websiteUrl,
+  email: company.email,
+  ...(phones.length
+    ? {
+        telephone: phones.map((p) => p.raw),
+      }
+    : {}),
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: phones[0]?.raw,
+    email: company.email,
+    contactType: "customer service",
+    areaServed: {
+      "@type": "Country",
+      name: "Nigeria",
+    },
+    availableLanguage: ["English"],
+    url: `${websiteUrl}/#contact`,
+  },
+  sameAs: [websiteUrl],
+};
 
 export function Contact() {
   const { toast } = useToast();
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [service, setService] = useState<string>("");
@@ -80,7 +115,19 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="bg-muted py-20 sm:py-24">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="bg-muted py-20 sm:py-24"
+    >
+      {/* Contact structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Section Heading */}
@@ -89,13 +136,18 @@ export function Contact() {
             Get In Touch
           </span>
 
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            Request a free quote today
+          <h2
+            id="contact-heading"
+            className="mt-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
+          >
+            Contact {company.name}
           </h2>
 
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Visit any of our offices, call us, or send a message — our team is
-            ready to help you choose the right system.
+            Request a free quote for solar energy systems, inverters,
+            batteries, electrical installations and other energy
+            solutions. Visit our offices, call us or send a message.
+            Our team is ready to assist you.
           </p>
         </div>
 
@@ -110,6 +162,7 @@ export function Contact() {
                 <a
                   key={p.raw}
                   href={`tel:${p.raw}`}
+                  aria-label={`Call ${company.name} on ${p.display}`}
                   className="site-card flex items-center gap-4 rounded-2xl border bg-card p-5"
                 >
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -133,6 +186,7 @@ export function Contact() {
             <div className="grid gap-4 sm:grid-cols-2">
               <a
                 href={`mailto:${company.email}`}
+                aria-label={`Email ${company.name}`}
                 className="site-card flex items-center gap-4 rounded-2xl border bg-card p-5"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -154,6 +208,7 @@ export function Contact() {
                 href={company.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Visit ${company.name} official website`}
                 className="site-card flex items-center gap-4 rounded-2xl border bg-card p-5"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -176,17 +231,18 @@ export function Contact() {
             <div>
               <div className="mb-5">
                 <h3 className="text-lg font-bold text-foreground">
-                  Our Office Locations
+                  Our Office Locations in Nigeria
                 </h3>
 
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Find and visit us at either of our office locations.
+                  Find and visit Divine Vine-Edo Global Resources Ltd
+                  at either of our office locations.
                 </p>
               </div>
 
               <div className="space-y-6">
                 {offices.map((office) => (
-                  <div
+                  <article
                     key={office.label}
                     className="site-card overflow-hidden rounded-2xl border bg-card shadow-sm"
                   >
@@ -201,16 +257,16 @@ export function Contact() {
                           {office.label}
                         </span>
 
-                        <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">
+                        <address className="mt-2 text-sm font-medium leading-relaxed text-foreground not-italic">
                           {office.address}
-                        </p>
+                        </address>
                       </div>
                     </div>
 
                     {/* Embedded Google Map */}
                     <div className="relative h-64 w-full overflow-hidden border-y bg-muted sm:h-72">
                       <iframe
-                        title={`Google Map - ${office.label}`}
+                        title={`Google Maps location of ${company.name} - ${office.label}`}
                         src={`https://www.google.com/maps?q=${encodeURIComponent(
                           office.mapsQuery
                         )}&output=embed`}
@@ -236,13 +292,14 @@ export function Contact() {
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`Get directions to ${office.label} of ${company.name}`}
                         className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-bold text-primary-foreground transition-opacity hover:opacity-90"
                       >
                         Directions
                         <ExternalLink className="h-3.5 w-3.5" />
                       </a>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
             </div>
@@ -268,15 +325,18 @@ export function Contact() {
           {/* Quote Form */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
             <h3 className="text-xl font-bold text-foreground">
-              Send us a message
+              Request a Solar Energy or Electrical Services Quote
             </h3>
 
             <p className="mt-1.5 text-sm text-muted-foreground">
-              Fill the form and it will open in WhatsApp, ready to send to our
-              team.
+              Tell us what you need. Your completed enquiry will open
+              in WhatsApp, ready for you to send to our team.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 space-y-5"
+            >
 
               {/* Name and Phone */}
               <div className="grid gap-5 sm:grid-cols-2">
@@ -287,6 +347,8 @@ export function Contact() {
 
                   <Input
                     id="name"
+                    name="name"
+                    autoComplete="name"
                     placeholder="e.g. John Okafor"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -301,7 +363,9 @@ export function Contact() {
 
                   <Input
                     id="phone"
+                    name="phone"
                     type="tel"
+                    autoComplete="tel"
                     placeholder="e.g. 0803 000 0000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
@@ -349,7 +413,8 @@ export function Contact() {
 
                 <Textarea
                   id="message"
-                  placeholder="Tell us about your power needs — e.g. 'I want to power 6 bulbs, 2 fans, a TV and a freezer day and night…'"
+                  name="message"
+                  placeholder="Tell us about your power needs — e.g. I want to power 6 bulbs, 2 fans, a TV and a freezer day and night..."
                   rows={5}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}

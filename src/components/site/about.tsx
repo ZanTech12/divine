@@ -19,6 +19,8 @@ import {
 
 import { company, offices } from "@/lib/site-data";
 
+const websiteUrl = "https://www.divinesolarhub.com";
+
 const pillars = [
   {
     icon: Eye,
@@ -49,14 +51,79 @@ const advantages = [
   "Proper invoices and warranties",
 ];
 
+// Organization structured data for search engines.
+const companySchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${websiteUrl}/#organization`,
+  name: company.name,
+  url: websiteUrl,
+  description:
+    "Divine Vine-Edo Global Resources Ltd is a Nigerian solar energy and electrical solutions company providing solar power systems, inverters, batteries, solar street lights and electrical installation services.",
+  founder: {
+    "@type": "Person",
+    "@id": `${websiteUrl}/#founder`,
+    name: "Vincent Edochie Mmadukolu",
+    jobTitle: "Founder",
+  },
+  address: [
+    {
+      "@type": "PostalAddress",
+      addressLocality: "Gboko",
+      addressRegion: "Benue State",
+      addressCountry: "NG",
+    },
+    {
+      "@type": "PostalAddress",
+      streetAddress: "Ultra Modern Market",
+      addressLocality: "Asaba",
+      addressRegion: "Delta State",
+      addressCountry: "NG",
+    },
+  ],
+  areaServed: {
+    "@type": "Country",
+    name: "Nigeria",
+  },
+  knowsAbout: [
+    "Solar energy systems",
+    "Solar panel installation",
+    "Solar inverters",
+    "Solar batteries",
+    "Solar street lights",
+    "Electrical installations",
+    "Renewable energy solutions",
+  ],
+  ...(company.whatsappPrimary
+    ? {
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: `+${company.whatsappPrimary}`,
+          contactType: "customer service",
+          areaServed: "NG",
+          availableLanguage: ["English"],
+        },
+      }
+    : {}),
+};
+
 export function About() {
   const locations = offices.slice(0, 2);
 
   return (
     <section
       id="about"
+      aria-labelledby="about-heading"
       className="relative bg-[#071321] py-16 sm:py-20 lg:py-28"
     >
+      {/* Company structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(companySchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       {/* Background decorations */}
       <div
         aria-hidden="true"
@@ -76,7 +143,10 @@ export function About() {
             About Our Company
           </span>
 
-          <h2 className="mt-6 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-6xl">
+          <h2
+            id="about-heading"
+            className="mt-6 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-6xl"
+          >
             Powering Homes.
             <span className="block text-amber-400">
               Empowering Businesses.
@@ -84,9 +154,9 @@ export function About() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-sm leading-8 text-slate-400 sm:text-base lg:text-lg">
-            Reliable energy solutions, quality electrical products
-            and professional engineering services built around
-            the needs of homes, businesses and communities.
+            {company.name} provides solar energy solutions, quality
+            electrical products and professional engineering services
+            for homes, businesses and communities across Nigeria.
           </p>
 
           <div className="mx-auto mt-8 h-1 w-24 rounded-full bg-amber-400" />
@@ -116,12 +186,12 @@ export function About() {
                 <strong className="font-bold text-white">
                   {company.name}
                 </strong>{" "}
-                is a solar energy and electrical resources company
-                headquartered in Gboko, Benue State, with a trading
-                shop in the Ultra Modern Market, Asaba, Delta State.
-                We are specialists in solar power systems, inverters,
-                batteries, solar street lights and all kinds of
-                electrical installations.
+                is a Nigerian solar energy and electrical resources
+                company headquartered in Gboko, Benue State, with a
+                trading shop in the Ultra Modern Market, Asaba, Delta
+                State. We specialize in solar power systems, inverters,
+                batteries, solar street lights and electrical
+                installations.
               </p>
 
               <p>
@@ -137,18 +207,18 @@ export function About() {
               <p>
                 Nigeria&apos;s power challenge demands a solution
                 that is clean, quiet and cost-effective. That is
-                exactly what we deliver: solar systems sized to
-                your real needs, installed by trained technicians,
-                using genuine equipment — so your home or business
-                enjoys stable power while your generator rests.
+                exactly what we aim to deliver: solar systems sized
+                to your real needs, installed using suitable
+                equipment and professional workmanship — so your
+                home or business can enjoy dependable electricity.
               </p>
 
               <p>
                 From a small flat that needs light at night, to a
                 shop that must never miss a sale, to a community
                 that deserves street lights and clean water — we
-                design, supply, install and maintain it all under
-                one roof.
+                provide solar energy and electrical solutions
+                designed around different customer needs.
               </p>
             </div>
 
@@ -182,11 +252,14 @@ export function About() {
             </div>
 
             {/* Office locations */}
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            <div
+              className="mt-7 grid gap-3 sm:grid-cols-2"
+              aria-label="Company office locations"
+            >
               {locations.map((office, index) => (
-                <div
+                <address
                   key={office.address}
-                  className="flex min-w-0 items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4"
+                  className="flex min-w-0 items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 not-italic"
                 >
                   <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
 
@@ -199,7 +272,7 @@ export function About() {
                       {office.address.replace(", Nigeria", "")}
                     </p>
                   </div>
-                </div>
+                </address>
               ))}
             </div>
           </div>
@@ -229,7 +302,7 @@ export function About() {
                 <div className="relative aspect-[4/5] w-full">
                   <Image
                     src="/images/projects/cert.jpeg"
-                    alt={`Certificate of Incorporation of ${company.name}`}
+                    alt={`Corporate Affairs Commission Certificate of Incorporation for ${company.name}, Nigeria`}
                     fill
                     priority
                     sizes="(min-width: 1024px) 40vw, 100vw"
@@ -277,7 +350,7 @@ export function About() {
                   <strong className="text-white">
                     {company.name}
                   </strong>{" "}
-                  is a duly incorporated limited liability company
+                  is an incorporated limited liability company
                   registered with the Corporate Affairs Commission
                   of Nigeria.
                 </p>
@@ -328,7 +401,10 @@ export function About() {
                   key={pillar.title}
                   className="relative h-full overflow-hidden rounded-[26px] border border-white/10 bg-gradient-to-br from-[#15263a] to-[#0d1a2a] p-7 transition-colors duration-300 hover:border-amber-400/40 sm:p-8"
                 >
-                  <span className="absolute right-6 top-5 text-6xl font-black text-white/[0.035]">
+                  <span
+                    aria-hidden="true"
+                    className="absolute right-6 top-5 text-6xl font-black text-white/[0.035]"
+                  >
                     {pillar.number}
                   </span>
 

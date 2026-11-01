@@ -1,3 +1,4 @@
+
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -13,8 +14,57 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const websiteUrl = "https://www.divinesolarhub.com";
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${websiteUrl}/#organization`,
+  name: "Divine Vine-Edo Global Resources Ltd",
+  url: websiteUrl,
+  logo: `${websiteUrl}/logo.svg`,
+  image: `${websiteUrl}/images/hero-bg.jpeg`,
+  description:
+    "Divine Vine-Edo Global Resources Ltd provides solar energy solutions, solar panel installations, hybrid inverters, batteries, solar street lights, borehole systems and electrical services in Nigeria.",
+  email: "divinevision5050@gmail.com",
+  telephone: "+2347033533320",
+  founder: {
+    "@type": "Person",
+    "@id": `${websiteUrl}/#founder`,
+    name: "Vincent Edochie Mmadukolu",
+  },
+  address: [
+    {
+      "@type": "PostalAddress",
+      addressLocality: "Gboko",
+      addressRegion: "Benue State",
+      addressCountry: "NG",
+    },
+    {
+      "@type": "PostalAddress",
+      streetAddress: "Ultra Modern Market",
+      addressLocality: "Asaba",
+      addressRegion: "Delta State",
+      addressCountry: "NG",
+    },
+  ],
+  areaServed: {
+    "@type": "Country",
+    name: "Nigeria",
+  },
+  knowsAbout: [
+    "Solar Energy Systems",
+    "Solar Panel Installation",
+    "Hybrid Inverters",
+    "Solar Batteries",
+    "Solar Street Lighting",
+    "Borehole Pumping Systems",
+    "Electrical Wiring",
+  ],
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.divinesolarhub.com"),
+  metadataBase: new URL(websiteUrl),
   title:
     "Divine Vine-Edo Global Resources Ltd | Solar Energy & Electrical Services in Nigeria",
   description:
@@ -37,7 +87,7 @@ export const metadata: Metadata = {
     title: "Divine Vine-Edo Global Resources Ltd",
     description:
       "Reliable solar energy, inverters & electrical services for Nigerian homes and businesses. Offices in Gboko (Benue State) and Asaba (Delta State).",
-    url: "https://www.divinesolarhub.com",
+    url: websiteUrl,
     siteName: "Divine Vine-Edo Global Resources Ltd",
     type: "website",
     locale: "en_NG",
@@ -72,6 +122,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+
         {children}
         <Toaster />
       </body>

@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import {
   GraduationCap,
@@ -9,16 +10,64 @@ import {
 import { founder, company } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
 
+const websiteUrl = "https://www.divinesolarhub.com";
+const founderUrl = `${websiteUrl}/founder`;
+
 const whatsappHref = `https://wa.me/${company.whatsappPrimary}?text=${encodeURIComponent(
   `Hello ${founder.name}, I got your contact from your website.`
 )}`;
+
+// Structured data helps search engines understand the founder
+// and his relationship with the company.
+const founderSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${websiteUrl}/#founder`,
+      name: founder.name,
+      jobTitle: "Founder",
+      url: founderUrl,
+      description: `${founder.name} is the founder of Divine Vine-Edo Global Resources Ltd, a Nigerian company providing solar energy and electrical solutions.`,
+      worksFor: {
+        "@id": `${websiteUrl}/#organization`,
+      },
+      mainEntityOfPage: founderUrl,
+      ...(founder.photo
+        ? {
+            image: founder.photo.startsWith("http")
+              ? founder.photo
+              : `${websiteUrl}${founder.photo}`,
+          }
+        : {}),
+    },
+    {
+      "@type": "Organization",
+      "@id": `${websiteUrl}/#organization`,
+      name: "Divine Vine-Edo Global Resources Ltd",
+      url: websiteUrl,
+      founder: {
+        "@id": `${websiteUrl}/#founder`,
+      },
+    },
+  ],
+};
 
 export function Founder() {
   return (
     <section
       id="founder"
+      aria-labelledby="founder-heading"
       className="relative scroll-mt-24 overflow-hidden bg-background py-20 sm:py-28"
     >
+      {/* Founder and company structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(founderSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       {/* ── Ambient background: soft glows + dot grid ─────────── */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
@@ -28,14 +77,17 @@ export function Founder() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-12 lg:gap-14 xl:gap-20">
+
           {/* ── Portrait ──────────────────────────────────────── */}
           <div className="min-w-0 lg:col-span-5">
             <div className="relative mx-auto w-full max-w-md">
+
               {/* dotted corner pattern */}
               <div
                 aria-hidden="true"
                 className="absolute -left-7 -top-7 h-28 w-28 rounded-2xl opacity-50 [background-image:radial-gradient(circle_at_1px_1px,hsl(var(--primary))_1.5px,transparent_0)] [background-size:14px_14px]"
               />
+
               {/* soft gradient glow */}
               <div
                 aria-hidden="true"
@@ -45,14 +97,16 @@ export function Founder() {
               {/* framed portrait card */}
               <div className="group relative rounded-[2rem] bg-card p-3 shadow-2xl shadow-primary/10 ring-1 ring-border">
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[1.6rem] bg-muted">
+
                   <Image
                     src={founder.photo}
-                    alt={`Portrait of ${founder.name}, founder of Divine Vine-Edo Global Resources Ltd`}
+                    alt={`${founder.name}, Founder of Divine Vine-Edo Global Resources Ltd`}
                     fill
                     priority
                     sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 90vw"
                     className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
+
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-6 pt-16">
                     <div className="flex items-center gap-2">
                       <p className="text-xl font-bold tracking-tight text-white">
@@ -63,6 +117,7 @@ export function Founder() {
                         className="h-5 w-5 shrink-0 text-sky-400"
                       />
                     </div>
+
                     <p className="mt-0.5 text-sm font-semibold text-amber-300">
                       {founder.role}
                     </p>
@@ -74,10 +129,12 @@ export function Founder() {
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/75 text-primary-foreground shadow-lg shadow-primary/25">
                     <Wrench className="h-5 w-5" />
                   </span>
+
                   <span className="min-w-0">
                     <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                       {founder.trade.label}
                     </span>
+
                     <span className="block max-w-[11rem] truncate text-xs font-bold text-foreground">
                       {founder.trade.value}
                     </span>
@@ -89,20 +146,23 @@ export function Founder() {
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Chat with ${founder.name.split(" ")[0]} on WhatsApp`}
+                  aria-label={`Chat with ${founder.name} on WhatsApp`}
                   className="absolute bottom-28 left-4 flex items-center gap-3 rounded-2xl border bg-background/85 py-2.5 pl-2.5 pr-4 shadow-xl backdrop-blur-md transition-transform duration-300 hover:scale-105 sm:-left-6"
                 >
                   <span className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-[#25D366] text-white shadow-lg shadow-[#25D366]/40">
                     <MessageCircle className="h-5 w-5" />
+
                     <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#25D366] opacity-70" />
                       <span className="relative inline-flex h-3.5 w-3.5 rounded-full border-2 border-background bg-[#25D366]" />
                     </span>
                   </span>
+
                   <span>
                     <span className="block text-xs font-bold text-foreground">
                       Let&rsquo;s talk
                     </span>
+
                     <span className="block text-[11px] font-medium text-muted-foreground">
                       Available on WhatsApp
                     </span>
@@ -114,21 +174,27 @@ export function Founder() {
 
           {/* ── Story ─────────────────────────────────────────── */}
           <div className="min-w-0 lg:col-span-7">
+
             {/* eyebrow pill */}
             <span className="inline-flex items-center gap-2.5 rounded-full border bg-card/80 py-1.5 pl-3 pr-4 shadow-sm backdrop-blur">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
+
               <span className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                 Meet the Founder
               </span>
             </span>
 
-            <h2 className="mt-5 text-balance text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
+            <h2
+              id="founder-heading"
+              className="mt-5 text-balance text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground sm:text-5xl"
+            >
               The man behind{" "}
               <span className="relative inline-block whitespace-nowrap text-primary">
                 the mission
+
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 220 12"
@@ -146,6 +212,13 @@ export function Founder() {
               </span>
             </h2>
 
+            {/* Explicit founder identity for search engines and visitors */}
+            <p className="sr-only">
+              {founder.name} is the founder of Divine Vine-Edo Global
+              Resources Ltd, a Nigerian company focused on solar energy,
+              electrical products and engineering solutions.
+            </p>
+
             {/* bio with drop cap */}
             <div className="mt-6 max-w-2xl space-y-4 text-muted-foreground">
               {founder.bio.map((paragraph, i) =>
@@ -157,7 +230,10 @@ export function Founder() {
                     {paragraph}
                   </p>
                 ) : (
-                  <p key={i} className="text-pretty text-base leading-relaxed">
+                  <p
+                    key={i}
+                    className="text-pretty text-base leading-relaxed"
+                  >
                     {paragraph}
                   </p>
                 )
@@ -178,10 +254,12 @@ export function Founder() {
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/75 text-primary-foreground shadow-lg shadow-primary/25 transition-transform duration-300 group-hover:scale-110">
                       <Icon className="h-5 w-5" />
                     </span>
+
                     <p className="text-xs font-bold uppercase tracking-[0.14em] text-foreground">
                       {label}
                     </p>
                   </div>
+
                   <p className="mt-3.5 text-sm leading-relaxed text-muted-foreground">
                     {value}
                   </p>
@@ -195,9 +273,11 @@ export function Founder() {
                 aria-hidden="true"
                 className="absolute -right-4 -top-4 h-28 w-28 rotate-12 text-primary/10"
               />
+
               <blockquote className="relative text-lg font-medium italic leading-relaxed text-accent-foreground">
                 &ldquo;{founder.quote}&rdquo;
               </blockquote>
+
               <figcaption className="relative mt-4 flex items-center gap-3 text-sm font-semibold text-accent-foreground/80">
                 <span aria-hidden="true" className="h-px w-8 bg-primary/60" />
                 {founder.name}, {founder.role}
@@ -211,6 +291,7 @@ export function Founder() {
                   <span className="mt-px flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-secondary/15">
                     <BadgeCheck className="h-3.5 w-3.5 text-secondary" />
                   </span>
+
                   <span className="text-sm font-medium leading-relaxed text-foreground">
                     {item}
                   </span>
@@ -225,11 +306,16 @@ export function Founder() {
                 size="lg"
                 className="group h-14 rounded-full bg-[#25D366] px-8 text-base font-semibold text-white shadow-xl shadow-[#25D366]/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#1EBE5D] hover:shadow-2xl hover:shadow-[#25D366]/40 focus-visible:ring-[#25D366]"
               >
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
                   Talk to {founder.name.split(" ")[0]} on WhatsApp
                 </a>
               </Button>
+
               <p className="text-sm font-medium text-muted-foreground">
                 Opens straight in WhatsApp — say hello anytime.
               </p>

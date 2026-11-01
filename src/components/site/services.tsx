@@ -13,6 +13,8 @@ import {
 import { services, company } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
 
+const websiteUrl = "https://www.divinesolarhub.com";
+
 const iconMap: Record<string, LucideIcon> = {
   Sun,
   BatteryCharging,
@@ -22,12 +24,52 @@ const iconMap: Record<string, LucideIcon> = {
   ShoppingCart,
 };
 
+// Structured data for the company's services.
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": `${websiteUrl}/#services`,
+  name: "Solar Energy and Electrical Services",
+  description:
+    "Solar energy, inverter, battery, lighting, water pumping and electrical solutions offered by Divine Vine-Edo Global Resources Ltd in Nigeria.",
+  url: `${websiteUrl}/#services`,
+  itemListOrder: "https://schema.org/ItemListOrderAscending",
+  numberOfItems: services.length,
+  itemListElement: services.map((service, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Service",
+      "@id": `${websiteUrl}/#service-${index + 1}`,
+      name: service.title,
+      description: service.description,
+      serviceType: service.title,
+      provider: {
+        "@id": `${websiteUrl}/#organization`,
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "Nigeria",
+      },
+    },
+  })),
+};
+
 export function Services() {
   return (
     <section
       id="services"
+      aria-labelledby="services-heading"
       className="relative w-full overflow-hidden bg-muted py-16 sm:py-20 lg:py-24"
     >
+      {/* Services structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(servicesSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Section heading */}
@@ -36,14 +78,20 @@ export function Services() {
             What We Do
           </span>
 
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Complete solar &amp; electrical services
+          <h2
+            id="services-heading"
+            className="mt-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+          >
+            Solar Energy and Electrical Services in Nigeria
           </h2>
 
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            From the first panel to the final switch — we supply, install and
-            maintain the systems that keep Nigerian homes and businesses
-            powered.
+            Divine Vine-Edo Global Resources Ltd provides solar energy
+            and electrical solutions for residential, commercial and
+            community applications. From solar panel supply and
+            installation to inverter systems, batteries, lighting
+            and electrical solutions, we help homes and businesses
+            access dependable power.
           </p>
         </div>
 
@@ -56,9 +104,13 @@ export function Services() {
               <article
                 key={service.title}
                 className="site-card group flex h-full min-w-0 flex-col rounded-2xl border border-border bg-card p-6 transition-shadow duration-300 hover:shadow-lg sm:p-7"
+                aria-label={service.title}
               >
                 {/* Service icon */}
-                <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-secondary text-amber-400 transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                <div
+                  className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-secondary text-amber-400 transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground"
+                  aria-hidden="true"
+                >
                   <Icon className="h-7 w-7" />
                 </div>
 
@@ -73,17 +125,25 @@ export function Services() {
                 </p>
 
                 {/* Service features */}
-                <ul className="mt-5 space-y-2">
-                  {service.points.map((point) => (
-                    <li
-                      key={point}
-                      className="flex items-start gap-2 text-xs font-medium leading-relaxed text-foreground/75 sm:text-sm"
-                    >
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
+                {service.points.length > 0 && (
+                  <ul
+                    className="mt-5 space-y-2"
+                    aria-label={`${service.title} features`}
+                  >
+                    {service.points.map((point) => (
+                      <li
+                        key={point}
+                        className="flex items-start gap-2 text-xs font-medium leading-relaxed text-foreground/75 sm:text-sm"
+                      >
+                        <span
+                          className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                          aria-hidden="true"
+                        />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </article>
             );
           })}
@@ -93,11 +153,12 @@ export function Services() {
         <div className="mt-10 flex flex-col items-center justify-between gap-6 rounded-2xl bg-secondary px-5 py-8 text-center sm:mt-12 sm:px-8 sm:py-10 lg:flex-row lg:text-left">
           <div className="max-w-2xl">
             <h3 className="text-xl font-bold leading-snug text-white sm:text-2xl">
-              Need a custom solar solution for your home or business?
+              Need a Custom Solar Solution for Your Home or Business?
             </h3>
 
             <p className="mt-3 text-sm leading-relaxed text-white/80 sm:text-base">
-              Talk to us today — consultation and site survey are free.
+              Contact Divine Vine-Edo Global Resources Ltd to discuss
+              your solar energy and electrical requirements.
             </p>
           </div>
 
@@ -112,6 +173,7 @@ export function Services() {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Contact Divine Vine-Edo Global Resources Ltd on WhatsApp"
             >
               Chat With Us
               <ArrowRight className="ml-2 h-4 w-4" />
