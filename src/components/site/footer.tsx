@@ -157,7 +157,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-center text-xs text-white/60 sm:flex-row sm:px-6 lg:px-8">
 
           <p>
-            © {new Date().getFullYear()} {company.name}. All rights reserved.
+            © 2026 {company.name}. All rights reserved.
           </p>
 
           <p>
