@@ -1,6 +1,16 @@
 
-import { Mail, Phone, MapPin, Globe, Clock, ArrowUp } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Globe,
+  Clock,
+  ArrowUp,
+  Store,
+} from "lucide-react";
+
 import { Logo } from "@/app/logo";
+
 import {
   company,
   phones,
@@ -48,6 +58,20 @@ export function Footer() {
                   </a>
                 </li>
               ))}
+
+              {/* Shop & Directory */}
+              <li className="pt-2">
+                <a
+                  href="https://shop.divinesolarhub.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 transition-colors hover:text-amber-300"
+                  aria-label="Explore our shop and directory"
+                >
+                  <Store className="h-4 w-4" />
+                  Shop & Directory
+                </a>
+              </li>
             </ul>
           </nav>
 
@@ -133,7 +157,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-center text-xs text-white/60 sm:flex-row sm:px-6 lg:px-8">
 
           <p>
-            © 2026 {company.name}. All rights reserved.
+            © {new Date().getFullYear()} {company.name}. All rights reserved.
           </p>
 
           <p>
