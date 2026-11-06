@@ -6,7 +6,7 @@ import {
   Globe,
   Clock,
   ArrowUp,
-  Store,
+  ShoppingBag,
 } from "lucide-react";
 
 import { Logo } from "@/app/logo";
@@ -65,10 +65,10 @@ export function Footer() {
                   href="https://shop.divinesolarhub.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 transition-colors hover:text-amber-300"
+                  className="inline-flex items-center gap-2.5 rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-amber-400 transition-all hover:bg-amber-400 hover:text-[#0B2E13]"
                   aria-label="Explore our shop and directory"
                 >
-                  <Store className="h-4 w-4" />
+                  <ShoppingBag className="h-5 w-5 shrink-0" />
                   Shop & Directory
                 </a>
               </li>
