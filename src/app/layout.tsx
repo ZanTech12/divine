@@ -16,23 +16,29 @@ const geistMono = Geist_Mono({
 
 const websiteUrl = "https://www.divinesolarhub.com";
 
+// Divine Vine-Edo company logo
+// File location: public/Divine Vine edo logo.png
+const logoUrl = "/Divine%20Vine%20edo%20logo.png";
+
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${websiteUrl}/#organization`,
   name: "Divine Vine-Edo Global Resources Ltd",
   url: websiteUrl,
-  logo: `${websiteUrl}/logo.svg`,
+  logo: `${websiteUrl}${logoUrl}`,
   image: `${websiteUrl}/images/hero-bg.jpeg`,
   description:
     "Divine Vine-Edo Global Resources Ltd provides solar energy solutions, solar panel installations, hybrid inverters, batteries, solar street lights, borehole systems and electrical services in Nigeria.",
   email: "divinevision5050@gmail.com",
   telephone: "+2347033533320",
+
   founder: {
     "@type": "Person",
     "@id": `${websiteUrl}/#founder`,
     name: "Vincent Edochie Mmadukolu",
   },
+
   address: [
     {
       "@type": "PostalAddress",
@@ -48,10 +54,12 @@ const organizationSchema = {
       addressCountry: "NG",
     },
   ],
+
   areaServed: {
     "@type": "Country",
     name: "Nigeria",
   },
+
   knowsAbout: [
     "Solar Energy Systems",
     "Solar Panel Installation",
@@ -65,10 +73,13 @@ const organizationSchema = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(websiteUrl),
+
   title:
     "Divine Vine-Edo Global Resources Ltd | Solar Energy & Electrical Services in Nigeria",
+
   description:
     "Divine Vine-Edo Global Resources Ltd supplies and installs solar panels, hybrid inverters, batteries, solar street lights and borehole systems, with professional electrical wiring services. Offices in Gboko, Benue State and Asaba, Delta State, Nigeria.",
+
   keywords: [
     "solar installation Nigeria",
     "solar company Benue State",
@@ -79,32 +90,48 @@ export const metadata: Metadata = {
     "Divine Vine-Edo Global Resources",
     "divinesolarhub",
   ],
-  authors: [{ name: "Divine Vine-Edo Global Resources Ltd" }],
+
+  authors: [
+    {
+      name: "Divine Vine-Edo Global Resources Ltd",
+    },
+  ],
+
   icons: {
-    icon: "/logo.svg",
+    icon: logoUrl,
+    shortcut: logoUrl,
+    apple: logoUrl,
   },
+
   openGraph: {
     title: "Divine Vine-Edo Global Resources Ltd",
     description:
       "Reliable solar energy, inverters & electrical services for Nigerian homes and businesses. Offices in Gboko (Benue State) and Asaba (Delta State).",
+
     url: websiteUrl,
     siteName: "Divine Vine-Edo Global Resources Ltd",
     type: "website",
     locale: "en_NG",
+
     images: [
       {
-        url: "/images/hero-bg.jpeg",
-        width: 1344,
-        height: 768,
-        alt: "Solar panels installed on a Nigerian rooftop",
+        url: logoUrl,
+        width: 1200,
+        height: 630,
+        alt: "Divine Vine-Edo Global Resources Ltd Logo",
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
+
     title: "Divine Vine-Edo Global Resources Ltd",
+
     description:
       "Solar panels, inverters, batteries, street lights & electrical services in Nigeria.",
+
+    images: [logoUrl],
   },
 };
 
@@ -125,11 +152,15 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(organizationSchema).replace(
+              /</g,
+              "\\u003c"
+            ),
           }}
         />
 
         {children}
+
         <Toaster />
       </body>
     </html>
