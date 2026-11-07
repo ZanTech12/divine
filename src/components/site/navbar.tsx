@@ -1,7 +1,7 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import {
   Menu,
   X,
@@ -11,7 +11,6 @@ import {
   Clock,
 } from "lucide-react";
 
-import { Logo } from "@/app/logo";
 import { company, phones, navigation } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
 
@@ -97,13 +96,10 @@ export function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-[9999] w-full">
-
       {/* Top information bar */}
       <div className="relative z-10 bg-secondary text-secondary-foreground">
         <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-4 text-[11px] font-medium sm:px-6 lg:px-8">
-
           <div className="flex items-center gap-4 overflow-hidden">
-
             <a
               href={`mailto:${company.email}`}
               className="flex items-center gap-1.5 hover:text-amber-300"
@@ -145,7 +141,6 @@ export function Navbar() {
             </span>
             <span className="sm:hidden">Mon – Sat</span>
           </div>
-
         </div>
       </div>
 
@@ -157,16 +152,23 @@ export function Navbar() {
             : "bg-background"
         }`}
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-
-          {/* Logo */}
+        <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Enlarged permanent company logo */}
           <a
             href="#home"
-            aria-label="Go to homepage"
+            aria-label="Divine Vine-Edo homepage"
             onClick={closeMenu}
-            className="shrink-0"
+            className="relative flex h-[68px] w-[180px] shrink-0 items-center sm:w-[220px]"
           >
-            <Logo variant="dark" />
+            <Image
+              src="/divine-logo.png.png"
+              alt="Divine Vine-Edo Global Resources Ltd"
+              width={440}
+              height={150}
+              priority
+              className="h-full w-full object-contain object-left"
+              sizes="(max-width: 640px) 180px, 220px"
+            />
           </a>
 
           {/* Desktop navigation */}
@@ -215,7 +217,6 @@ export function Navbar() {
               <Menu className="pointer-events-none h-6 w-6" />
             )}
           </button>
-
         </div>
       </div>
 
@@ -227,19 +228,18 @@ export function Navbar() {
             type="button"
             aria-label="Close navigation menu"
             onClick={closeMenu}
-            className="fixed inset-x-0 bottom-0 top-[100px] z-[10000] bg-black/50 lg:hidden"
+            className="fixed inset-x-0 bottom-0 top-[112px] z-[10000] bg-black/50 lg:hidden"
           />
 
           {/* Mobile navigation panel */}
           <div
             id="mobile-navigation"
-            className="fixed inset-x-0 top-[100px] z-[10001] max-h-[calc(100dvh-100px)] overflow-y-auto overscroll-contain border-t border-border bg-background shadow-2xl lg:hidden"
+            className="fixed inset-x-0 top-[112px] z-[10001] max-h-[calc(100dvh-112px)] overflow-y-auto overscroll-contain border-t border-border bg-background shadow-2xl lg:hidden"
           >
             <nav
               className="px-5 pb-8 pt-4"
               aria-label="Mobile navigation"
             >
-
               {/* Navigation links */}
               {navigation.map((item) => (
                 <a
@@ -254,7 +254,6 @@ export function Navbar() {
 
               {/* Mobile action buttons */}
               <div className="mt-5 space-y-3 px-1">
-
                 <Button
                   asChild
                   className="h-12 w-full rounded-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
@@ -282,13 +281,11 @@ export function Navbar() {
                     Call {phones[0].display}
                   </a>
                 </Button>
-
               </div>
             </nav>
           </div>
         </>
       )}
-
     </header>
   );
 }
